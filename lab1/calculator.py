@@ -26,6 +26,7 @@ class ExpVar(Exp):
         return str(self.value)
 
 
+
 class ExpAdd(Exp):
     def __init__(self, left, right):
         self.left = left
@@ -44,6 +45,7 @@ class ExpMinus(Exp):
         return f"{self.left} - {self.right}"
 
 
+
 class ExpMulti(Exp):
     def __init__(self, left, right):
         self.left = left
@@ -52,6 +54,7 @@ class ExpMulti(Exp):
     def __str__(self):
         # raise Todo("Exercise 1: complete the destructure of AST and the __str__ magic method")
         return f'{self.left} * {self.right}'
+
 
 class ExpDiv(Exp):
     def __init__(self, left, right):
@@ -64,7 +67,7 @@ class ExpDiv(Exp):
 
 
 class ExpPar(Exp):
-    def __init__(self, exp):
+    def __init__(self, exp):  # the most key point
         self.exp = exp
 
     def __str__(self):
@@ -76,9 +79,19 @@ class ExpPar(Exp):
 def eval_value(exp: Exp):
     if isinstance(exp, ExpVar):
         return exp.value
+    elif isinstance(exp, ExpAdd):
+        return eval_value(exp.left) + eval_value(exp.right)
+    elif isinstance(exp, ExpMinus):
+        return eval_value(exp.left) - eval_value(exp.right)
+    elif isinstance(exp, ExpMulti):
+        return eval_value(exp.left) * eval_value(exp.right)
+    elif isinstance(exp, ExpDiv):
+        return eval_value(exp.left) / eval_value(exp.right)
+    else:
+        return eval_value(exp.exp)  # key point
 
-    return eval(str(exp))
     # raise Todo("Exercise 2： complete the eval method, calculate the value of AST")
+    # return eval(str(exp))
 
 
 test_case_1 = ExpAdd(
